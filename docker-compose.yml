@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: rm_sports_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: rm_sports
+      POSTGRES_USER: rm_sports
+      POSTGRES_PASSWORD: rm_sports
+    ports:
+      - "5432:5432"
+    volumes:
+      - rm_sports_db_data:/var/lib/postgresql/data
+
+volumes:
+  rm_sports_db_data:
