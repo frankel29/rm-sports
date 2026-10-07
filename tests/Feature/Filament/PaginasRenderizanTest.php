@@ -1,5 +1,6 @@
 <?php
 
+use App\Domain\Catalogo\Models\Responsable;
 use App\Enums\RolUsuario;
 use App\Models\User;
 
@@ -39,3 +40,23 @@ it('carga todas las páginas de listado del panel para un administrador', functi
     '/admin/gasto-mensuals/create',
     '/admin/users/create',
 ]);
+
+it('bloquea la importación masiva y la gestión de usuarios a roles que no son ADMIN', function (string $ruta) {
+    $vendedor = User::factory()->conRol(RolUsuario::VENDEDOR)->create();
+
+    $this->actingAs($vendedor)
+        ->get($ruta)
+        ->assertForbidden();
+})->with([
+    '/admin/importar-plantilla',
+    '/admin/users',
+]);
+
+it('bloquea la gestión de usuarios a un administrador de línea (no general)', function () {
+    $rm = Responsable::query()->create(['codigo' => 'RM', 'nombre' => 'RM']);
+    $adminDeLinea = User::factory()->conRol(RolUsuario::ADMIN)->create(['responsable_id' => $rm->id]);
+
+    $this->actingAs($adminDeLinea)
+        ->get('/admin/users')
+        ->assertForbidden();
+});

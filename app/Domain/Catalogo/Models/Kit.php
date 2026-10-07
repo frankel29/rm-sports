@@ -2,6 +2,7 @@
 
 namespace App\Domain\Catalogo\Models;
 
+use App\Support\Concerns\FiltraPorResponsable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Kit extends Model
 {
+    use FiltraPorResponsable;
+
     protected $fillable = [
         'codigo',
         'nombre',

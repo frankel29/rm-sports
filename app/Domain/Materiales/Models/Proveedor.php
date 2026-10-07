@@ -3,11 +3,14 @@
 namespace App\Domain\Materiales\Models;
 
 use App\Domain\Catalogo\Models\Responsable;
+use App\Support\Concerns\FiltraPorResponsable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Proveedor extends Model
 {
+    use FiltraPorResponsable;
+
     protected $table = 'proveedores';
 
     protected $fillable = [

@@ -3,6 +3,8 @@
 namespace App\Domain\Catalogo\Models;
 
 use App\Domain\Inventario\Models\MovimientoInventario;
+use App\Support\AlcanceResponsable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,6 +24,23 @@ class Sku extends Model
         return [
             'activo' => 'boolean',
         ];
+    }
+
+    /**
+     * El SKU no tiene columna "responsable_id" propia: la hereda de su
+     * Modelo. Se filtra por esa relación en lugar de usar el trait
+     * FiltraPorResponsable (pensado para columnas propias).
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope('responsable', function (Builder $query) {
+            if (AlcanceResponsable::activo()) {
+                $query->whereHas(
+                    'modelo',
+                    fn (Builder $q) => $q->where('responsable_id', AlcanceResponsable::idActual()),
+                );
+            }
+        });
     }
 
     public function modelo(): BelongsTo

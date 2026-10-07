@@ -32,6 +32,11 @@ class UserForm
                     ->options(RolUsuario::class)
                     ->default('VENDEDOR')
                     ->required(),
+                Select::make('responsable_id')
+                    ->label('Línea')
+                    ->relationship('responsable', 'nombre')
+                    ->placeholder('Todas (administrador general)')
+                    ->helperText('Vacío = ve y administra todo. Con una línea asignada, solo ve y administra esa línea.'),
             ]);
     }
 }

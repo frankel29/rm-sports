@@ -5,11 +5,14 @@ namespace App\Domain\Materiales\Models;
 use App\Domain\Catalogo\Models\Modelo;
 use App\Domain\Catalogo\Models\Responsable;
 use App\Domain\Catalogo\Models\Talla;
+use App\Support\Concerns\FiltraPorResponsable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CostoCompra extends Model
 {
+    use FiltraPorResponsable;
+
     protected $table = 'costos_compra';
 
     protected $fillable = [

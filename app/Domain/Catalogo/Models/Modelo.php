@@ -7,12 +7,15 @@ use App\Domain\Catalogo\Enums\TipoAbastecimiento;
 use App\Domain\Materiales\Models\BomLinea;
 use App\Domain\Materiales\Models\CostoCompra;
 use App\Domain\Materiales\Models\Proveedor;
+use App\Support\Concerns\FiltraPorResponsable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Modelo extends Model
 {
+    use FiltraPorResponsable;
+
     protected $fillable = [
         'codigo',
         'colegio_id',

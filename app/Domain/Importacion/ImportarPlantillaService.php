@@ -84,6 +84,7 @@ class ImportarPlantillaService
      */
     private function ejecutarTodos(string $rutaArchivo, User $user): array
     {
+        $spreadsheet = $this->lector->cargar($rutaArchivo);
         $resultados = [];
 
         foreach (self::ORDEN_HOJAS as $hoja) {
@@ -93,7 +94,7 @@ class ImportarPlantillaService
                 continue;
             }
 
-            $filas = $this->lector->leerHoja($rutaArchivo, $hoja);
+            $filas = $this->lector->extraerHoja($spreadsheet, $hoja);
             $resultados[$hoja] = $importador->importar($filas, $user);
         }
 

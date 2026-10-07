@@ -2,12 +2,15 @@
 
 namespace App\Domain\Catalogo\Models;
 
+use App\Support\Concerns\FiltraPorResponsable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class PrecioVenta extends Model
 {
+    use FiltraPorResponsable;
+
     protected $table = 'precios_venta';
 
     protected $fillable = [

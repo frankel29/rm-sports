@@ -29,6 +29,11 @@ class ResponsableResource extends Resource
 
     protected static ?string $pluralModelLabel = 'responsables';
 
+    public static function canAccess(): bool
+    {
+        return (bool) auth()->user()?->esAdminGeneral();
+    }
+
     public static function form(Schema $schema): Schema
     {
         return ResponsableForm::configure($schema);

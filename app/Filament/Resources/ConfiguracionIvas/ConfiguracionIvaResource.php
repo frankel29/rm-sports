@@ -27,6 +27,11 @@ class ConfiguracionIvaResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Configuración de IVA';
 
+    public static function canAccess(): bool
+    {
+        return (bool) auth()->user()?->esAdminGeneral();
+    }
+
     public static function form(Schema $schema): Schema
     {
         return ConfiguracionIvaForm::configure($schema);

@@ -9,6 +9,7 @@ use App\Domain\Inventario\Enums\TipoMovimientoInventario;
 use App\Domain\Inventario\Enums\Ubicacion;
 use App\Domain\Inventario\Models\Concerns\EsInmutable;
 use App\Models\User;
+use App\Support\Concerns\FiltraPorResponsable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class MovimientoInventario extends Model
 {
     use EsInmutable;
+    use FiltraPorResponsable;
 
     protected $table = 'movimientos_inventario';
 

@@ -25,6 +25,11 @@ class ImportarPlantilla extends Page
 
     protected static ?string $title = 'Importar plantilla de datos iniciales';
 
+    public static function canAccess(): bool
+    {
+        return (bool) auth()->user()?->esAdminGeneral();
+    }
+
     /**
      * @var array<string, mixed>|null
      */

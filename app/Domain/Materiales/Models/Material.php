@@ -6,12 +6,15 @@ use App\Domain\Catalogo\Models\Responsable;
 use App\Domain\Inventario\Models\MovimientoMaterial;
 use App\Domain\Materiales\Enums\TipoMaterial;
 use App\Domain\Materiales\Enums\UnidadMaterial;
+use App\Support\Concerns\FiltraPorResponsable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Material extends Model
 {
+    use FiltraPorResponsable;
+
     protected $table = 'materiales';
 
     protected $fillable = [

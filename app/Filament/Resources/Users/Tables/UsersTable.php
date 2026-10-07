@@ -23,6 +23,10 @@ class UsersTable
                 TextColumn::make('rol')
                     ->label('Rol')
                     ->badge(),
+                TextColumn::make('responsable.codigo')
+                    ->label('Línea')
+                    ->badge()
+                    ->placeholder('Todas'),
             ])
             ->recordActions([
                 EditAction::make(),
