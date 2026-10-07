@@ -1,0 +1,20 @@
+#cloud-config
+# Primer arranque de la VM: Docker, swap de 2 GB (la VM tiene 1 GB de RAM)
+# y actualizaciones de seguridad automáticas (vienen activas en Ubuntu).
+package_update: true
+package_upgrade: true
+packages:
+  - docker.io
+  - docker-compose-v2
+runcmd:
+  - fallocate -l 2G /swapfile
+  - chmod 600 /swapfile
+  - mkswap /swapfile
+  - swapon /swapfile
+  - echo '/swapfile none swap sw 0 0' >> /etc/fstab
+  - sysctl -w vm.swappiness=10
+  - echo 'vm.swappiness=10' > /etc/sysctl.d/99-swappiness.conf
+  - systemctl enable --now docker
+  - usermod -aG docker rmadmin
+  - mkdir -p /opt/rm-sports
+  - chown rmadmin:rmadmin /opt/rm-sports

@@ -25,6 +25,8 @@
 /storage/pail
 /vendor
 _ide_helper.php
+# Plantillas llenas con datos reales del negocio: el repo es público.
+/docs/plantilla_datos_iniciales_v*.xlsx
 Homestead.json
 Homestead.yaml
 Thumbs.db

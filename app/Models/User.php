@@ -36,9 +36,13 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
+    /**
+     * El backoffice es solo para administradores. VENDEDOR usará el POS y
+     * TALLER el registro de lotes, pantallas que todavía no existen.
+     */
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return $this->esAdmin();
     }
 
     public function responsable(): BelongsTo

@@ -52,6 +52,19 @@ it('bloquea la importación masiva y la gestión de usuarios a roles que no son 
     '/admin/users',
 ]);
 
+it('vendedor y taller no entran al backoffice (usarán el POS y el registro de lotes)', function (RolUsuario $rol) {
+    $usuario = User::factory()->conRol($rol)->create();
+
+    $this->actingAs($usuario)->get('/admin')->assertForbidden();
+})->with([RolUsuario::VENDEDOR, RolUsuario::TALLER]);
+
+it('un administrador de línea sí entra al backoffice', function () {
+    $gl = Responsable::query()->create(['codigo' => 'GL', 'nombre' => 'GL']);
+    $adminGl = User::factory()->conRol(RolUsuario::ADMIN)->create(['responsable_id' => $gl->id]);
+
+    $this->actingAs($adminGl)->get('/admin/modelos')->assertSuccessful();
+});
+
 it('bloquea la gestión de usuarios a un administrador de línea (no general)', function () {
     $rm = Responsable::query()->create(['codigo' => 'RM', 'nombre' => 'RM']);
     $adminDeLinea = User::factory()->conRol(RolUsuario::ADMIN)->create(['responsable_id' => $rm->id]);
