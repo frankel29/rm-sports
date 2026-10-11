@@ -25,6 +25,10 @@ class InventarioMaterialService
         string $origen = 'CAPTURA',
         ?string $nota = null,
     ): MovimientoMaterial {
+        if ($tipo === TipoMovimientoMaterial::INVENTARIO_INICIAL && $this->tieneInventarioInicial($material)) {
+            throw new InvalidArgumentException("El material {$material->codigo} ya tiene inventario inicial; corrige con un ajuste.");
+        }
+
         return MovimientoMaterial::create([
             'material_id' => $material->id,
             'tipo' => $tipo,
@@ -108,5 +112,17 @@ class InventarioMaterialService
     public function tieneStockNegativo(Material $material): bool
     {
         return $this->stock($material) < 0;
+    }
+
+    /**
+     * Un inventario inicial reversado no cuenta: permite volver a cargarlo bien.
+     */
+    public function tieneInventarioInicial(Material $material): bool
+    {
+        return MovimientoMaterial::query()
+            ->where('material_id', $material->id)
+            ->where('tipo', TipoMovimientoMaterial::INVENTARIO_INICIAL)
+            ->whereNotIn('id', MovimientoMaterial::query()->whereNotNull('movimiento_reversado_id')->select('movimiento_reversado_id'))
+            ->exists();
     }
 }

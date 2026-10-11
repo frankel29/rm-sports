@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Kits\Schemas;
 
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -27,6 +28,30 @@ class KitForm
                 Toggle::make('activo')
                     ->label('Activo')
                     ->default(true),
+                Repeater::make('componentes')
+                    ->label('Piezas del conjunto')
+                    ->relationship()
+                    ->schema([
+                        Select::make('modelo_id')
+                            ->label('Modelo')
+                            ->relationship('modelo', 'codigo')
+                            ->searchable()
+                            ->preload()
+                            ->distinct()
+                            ->required(),
+                        TextInput::make('cantidad')
+                            ->label('Cantidad')
+                            ->numeric()
+                            ->minValue(1)
+                            ->default(1)
+                            ->required(),
+                    ])
+                    ->columns(2)
+                    ->minItems(1)
+                    ->defaultItems(2)
+                    ->addActionLabel('Agregar pieza')
+                    ->helperText('La talla de cada pieza se elige al vender.')
+                    ->columnSpanFull(),
                 Textarea::make('notas')
                     ->label('Notas')
                     ->columnSpanFull(),

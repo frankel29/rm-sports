@@ -7,6 +7,7 @@ use App\Domain\Materiales\Models\PrecioMaterial;
 use App\Domain\Materiales\Models\Proveedor;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
+use InvalidArgumentException;
 
 class PrecioMaterialService
 {
@@ -35,6 +36,12 @@ class PrecioMaterialService
         string $origen = 'CAPTURA',
         ?string $notas = null,
     ): PrecioMaterial {
+        if ($material->precios()->whereDate('vigente_desde', '>=', $vigenteDesde)->exists()) {
+            throw new InvalidArgumentException(
+                "{$material->codigo} ya tiene un precio desde {$vigenteDesde->format('d/m/Y')} o una fecha posterior; usa una fecha más reciente."
+            );
+        }
+
         $anterior = $this->vigente($material, $vigenteDesde);
 
         if ($anterior && $anterior->vigente_hasta === null) {

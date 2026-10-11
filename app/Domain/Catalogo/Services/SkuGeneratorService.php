@@ -34,6 +34,25 @@ class SkuGeneratorService
         ));
     }
 
+    /**
+     * Crea los SKUs que falten según el rango talla desde/hasta guardado en el
+     * modelo. Nunca borra: si el rango se achica, los SKUs sobrantes quedan
+     * (pueden tener movimientos). Devuelve cuántos SKUs nuevos creó.
+     */
+    public function sincronizarRango(Modelo $modelo): int
+    {
+        if (! $modelo->talla_desde_id || ! $modelo->talla_hasta_id) {
+            return 0;
+        }
+
+        $desde = Talla::query()->findOrFail($modelo->talla_desde_id);
+        $hasta = Talla::query()->findOrFail($modelo->talla_hasta_id);
+
+        return $this->generarParaModelo($modelo, $desde, $hasta)
+            ->filter(fn (Sku $sku) => $sku->wasRecentlyCreated)
+            ->count();
+    }
+
     public function generarCodigo(Modelo $modelo, Talla $talla): string
     {
         return sprintf('%s-%s', $modelo->codigo, $talla->codigo);

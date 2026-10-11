@@ -8,6 +8,7 @@ use App\Domain\Catalogo\Models\Responsable;
 use App\Domain\Catalogo\Models\Sku;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
+use InvalidArgumentException;
 
 class PrecioVentaService
 {
@@ -41,6 +42,12 @@ class PrecioVentaService
         string $origen = 'CAPTURA',
         ?string $notas = null,
     ): PrecioVenta {
+        if ($vendible->preciosVenta()->whereDate('vigente_desde', '>=', $vigenteDesde)->exists()) {
+            throw new InvalidArgumentException(
+                "{$vendible->codigo} ya tiene un precio desde {$vigenteDesde->format('d/m/Y')} o una fecha posterior; usa una fecha más reciente."
+            );
+        }
+
         $anterior = $this->vigente($vendible, $vigenteDesde);
 
         if ($anterior && $anterior->vigente_hasta === null) {

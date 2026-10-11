@@ -66,7 +66,7 @@ class SkusTable
                     ->icon('heroicon-o-clipboard-document-list')
                     ->color('gray')
                     ->schema([])
-                    ->modalContent(fn ($record) => view('filament.sku-kardex', [
+                    ->modalContent(fn ($record) => view('filament.kardex', [
                         'movimientos' => app(InventarioService::class)->kardex($record),
                     ]))
                     ->modalSubmitAction(false)

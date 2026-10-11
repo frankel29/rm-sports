@@ -10,6 +10,7 @@ enum UnidadMaterial: string implements HasLabel
     case UNIDAD = 'UNIDAD';
     case KG = 'KG';
     case ROLLO = 'ROLLO';
+    case CONO = 'CONO';
 
     public function getLabel(): string
     {
@@ -18,6 +19,7 @@ enum UnidadMaterial: string implements HasLabel
             self::UNIDAD => 'Unidad',
             self::KG => 'Kilogramos',
             self::ROLLO => 'Rollo',
+            self::CONO => 'Cono',
         };
     }
 }

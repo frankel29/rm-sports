@@ -54,7 +54,9 @@ class MaterialesDemoSeeder extends Seeder
                 ],
             );
 
-            $this->precioMaterialService->registrar($material, $datos['precio'], Carbon::create(2026, 8, 15), $nilotex);
+            if (! $material->precios()->exists()) {
+                $this->precioMaterialService->registrar($material, $datos['precio'], Carbon::create(2026, 8, 15), $nilotex);
+            }
 
             $materiales[$codigo] = $material;
         }

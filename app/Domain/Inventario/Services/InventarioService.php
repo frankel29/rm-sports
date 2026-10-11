@@ -26,6 +26,10 @@ class InventarioService
         string $origen = 'CAPTURA',
         ?string $nota = null,
     ): MovimientoInventario {
+        if ($tipo === TipoMovimientoInventario::INVENTARIO_INICIAL && $this->tieneInventarioInicial($sku)) {
+            throw new InvalidArgumentException("El SKU {$sku->codigo} ya tiene inventario inicial; corrige con un ajuste.");
+        }
+
         return MovimientoInventario::create([
             'sku_id' => $sku->id,
             'tipo' => $tipo,
@@ -184,5 +188,17 @@ class InventarioService
     public function tieneStockNegativo(Sku $sku): bool
     {
         return $this->stock($sku) < 0;
+    }
+
+    /**
+     * Un inventario inicial reversado no cuenta: permite volver a cargarlo bien.
+     */
+    public function tieneInventarioInicial(Sku $sku): bool
+    {
+        return MovimientoInventario::query()
+            ->where('sku_id', $sku->id)
+            ->where('tipo', TipoMovimientoInventario::INVENTARIO_INICIAL)
+            ->whereNotIn('id', MovimientoInventario::query()->whereNotNull('movimiento_reversado_id')->select('movimiento_reversado_id'))
+            ->exists();
     }
 }

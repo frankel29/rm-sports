@@ -152,9 +152,11 @@ class CatalogoDemoSeeder extends Seeder
         $skuPantalon8 = $pantalon->skus()->where('talla_id', $talla8->id)->firstOrFail();
         $skuCamisetaIntM = $camisetaInt->skus()->where('talla_id', $tallaM->id)->firstOrFail();
 
-        $this->precioVentaService->registrar($skuChompa8, 15.00, true, Carbon::create(2026, 9, 1), $rm);
-        $this->precioVentaService->registrar($skuPantalon8, 12.00, true, Carbon::create(2026, 9, 1), $rm);
-        $this->precioVentaService->registrar($skuCamisetaIntM, 6.00, true, Carbon::create(2026, 9, 1), $gl);
-        $this->precioVentaService->registrar($kit, 25.00, true, Carbon::create(2026, 9, 1), $rm);
+        $precios = [[$skuChompa8, 15.00, $rm], [$skuPantalon8, 12.00, $rm], [$skuCamisetaIntM, 6.00, $gl], [$kit, 25.00, $rm]];
+        foreach ($precios as [$vendible, $precio, $responsable]) {
+            if (! $vendible->preciosVenta()->exists()) {
+                $this->precioVentaService->registrar($vendible, $precio, true, Carbon::create(2026, 9, 1), $responsable);
+            }
+        }
     }
 }

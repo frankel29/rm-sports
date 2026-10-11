@@ -7,7 +7,6 @@ use App\Filament\RelationManagers\PreciosVentaRelationManager;
 use App\Filament\Resources\Kits\Pages\CreateKit;
 use App\Filament\Resources\Kits\Pages\EditKit;
 use App\Filament\Resources\Kits\Pages\ListKits;
-use App\Filament\Resources\Kits\RelationManagers\ComponentesRelationManager;
 use App\Filament\Resources\Kits\Schemas\KitForm;
 use App\Filament\Resources\Kits\Tables\KitsTable;
 use BackedEnum;
@@ -44,7 +43,6 @@ class KitResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ComponentesRelationManager::class,
             PreciosVentaRelationManager::class,
         ];
     }
